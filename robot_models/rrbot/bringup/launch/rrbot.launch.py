@@ -14,7 +14,7 @@
 
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription, ExecuteProcess
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
@@ -42,7 +42,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare("gazebo_ros"), "launch", "gazebo.launch.py"])]
         ),
-        launch_arguments={"gdb": "false", "extra_gazebo_args": "-s libgazebo_ros_factory.so"}.items(),
+        launch_arguments={"gdb": "false"}.items(),
         
     )
 
@@ -69,6 +69,11 @@ def generate_launch_description():
             "rrbot_controllers.yaml",
         ]
     )
+
+    ExecuteProcess(
+            cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so',  '-s', 'libgazebo_ros_init.so', LaunchConfiguration('world')],
+            output='screen'
+        ),
 
     spawn_entity = Node(
         package="gazebo_ros",
