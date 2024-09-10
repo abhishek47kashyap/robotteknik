@@ -42,7 +42,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare("gazebo_ros"), "launch", "gazebo.launch.py"])]
         ),
-        launch_arguments={"gdb": "false"}.items(),
+        launch_arguments={"gdb": "false", "extra_gazebo_args": "-s libgazebo_ros_factory.so"}.items(),
         
     )
 
